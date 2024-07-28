@@ -1,0 +1,32 @@
+.result-table {
+    background-color: white; 
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px; 
+    margin: 0 auto; 
+}
+  
+  .info-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .info-table td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .label {
+    font-weight: bold;
+  }
+  
+  /* Responsive Design */
+  @media screen and (max-width: 768px) {
+    .result-table {
+      padding: 10px;
+      max-width: 90%;
+    }
+  }
+  

@@ -1,0 +1,95 @@
+.footer {
+    background-color: #000000;
+    color: #fff;
+    padding: 2rem;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.footer-brand, .footer-menu, .footer-company, .footer-news {
+    margin: 1rem;
+}
+
+.footer-brand {
+    margin-top: 2%;
+}
+
+.footer-logo {
+    width: 50px;
+    height: auto;
+    margin-top: 15px;
+}
+
+.footer-menu a, .footer-social a {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    margin: 0.5rem 0;
+}
+.footer-social {
+    display: flex;
+    align-items: center;
+    margin-top: 5%;
+
+}
+
+.footer-social a {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    padding: 0.5rem; 
+
+}
+.line
+{
+    border: 1px solid #383838;
+}
+.footer-copy {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.8rem;
+
+}
+.footer-input-container {
+    display: flex;
+}
+
+.footer-input {
+    background: #0C0C0C;
+    color: white;
+    border: 1px solid #3E3E3E;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    width: calc(100% - 120px); 
+}
+
+.footer-subscribe-btn {
+    background: #091AE5;
+    border: 1px solid #000000;
+    color: white;
+    border: none;
+    font-weight: bold;
+    padding: 0.9rem 1rem;
+    margin-top: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.footer-subscribe-btn:hover {
+    background-color: darkblue;
+}
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        align-items: flex-start; 
+    }
+
+    .footer-social a {
+        font-size: 1.2rem;
+        margin-right: 0.5rem;
+    }
+}

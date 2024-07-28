@@ -1,0 +1,210 @@
+.registration-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f8f9fa;
+    margin-top: 3%;
+}
+
+.registration-form {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.registration-form h2 {
+    margin-bottom: 1rem;
+}
+
+.registration-form p {
+    margin-bottom: 1.5rem;
+}
+
+.registration-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-container label {
+    align-self: flex-start;
+    color: #344054;
+}
+
+.registration-form input, .registration-form select {
+    padding: 0.9rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 1%;
+}
+.input-container.row {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.registration-form .checkbox-container {
+    display: flex;
+    align-items: center;
+}
+.registration-form .checkbox-container input {
+    margin-right: 0.5rem;
+}
+
+.registration-form .forgot-password {
+    margin-top: 0;
+}
+
+.registration-form .forgot-password a {
+    color: #FF7A00;
+    text-decoration: none;
+}
+.phone-input {
+    display: flex;
+    align-items: center;
+}
+
+.phone-input select {
+    padding: 0.9rem;
+    border: 1px solid #ccc;
+    border-radius: 4px 0 0 4px;
+}
+
+.phone-input input {
+    padding: 0.9rem;
+    border: 1px solid #ccc;
+    border-radius: 0 4px 4px 0;
+    flex: 1;
+}
+
+.registration-form button {
+    padding: 0.9rem 2rem;
+    background: #FF7A00;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.or-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.or-line {
+    flex: 1;
+    height: 1px;
+    background-color: #ccc;
+}
+
+.or-text {
+    margin: 0 1rem;
+    color: #555;
+}
+
+.registration-form .google-signup {
+    background-color: white;
+    color: #333;
+    border: 1px solid #ccc;
+    padding: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.google-signup img {
+    width: 20px;
+    height: 20px;
+}
+.new-account {
+    margin-top: 1rem;
+}
+
+.new-account a {
+    color: #FF7A00;
+    text-decoration: none;
+}
+@media (max-width: 768px) {
+    .registration-page {
+        padding: 1rem 1rem;
+        margin-top: 10%;
+    }
+
+    .registration-form {
+        padding: 1.5rem;
+        margin-top: 10%;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .registration-form h2 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .registration-form p {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .registration-form button {
+        padding: 0.7rem 1.5rem;
+    }
+
+    .registration-form .google-signup {
+        padding: 0.5rem;
+    }
+
+    .google-signup img {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .registration-page {
+        padding: 1rem;
+        margin-top: 10%;
+    }
+
+    .registration-form {
+        padding: 1rem;
+        margin-top: 10%;
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .registration-form h2 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .registration-form p {
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .registration-form button {
+        padding: 0.6rem 1rem;
+    }
+
+    .registration-form .google-signup {
+        padding: 0.5rem;
+    }
+
+    .google-signup img {
+        width: 14px;
+        height: 14px;
+    }
+}

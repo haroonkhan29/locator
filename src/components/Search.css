@@ -1,0 +1,23 @@
+.result-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.result-table {
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+.result-table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    color: black;
+}
+
+
+@media (max-width: 600px) {
+    .result-table td {
+        display: block;
+        /* width: 100%; */
+    }
+}
