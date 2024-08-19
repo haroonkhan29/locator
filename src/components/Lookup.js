@@ -1,5 +1,4 @@
-
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './MainPage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
@@ -8,6 +7,7 @@ import pak from './images/pak.png';
 import uk from './images/uk.png';
 import china from './images/china.png';
 import UAE from './images/Uae.png';
+import axios from 'axios';
 
 const countryOptions = [
     { code: '+1', label: 'United States', image: usa, numbers: ['1234567890', '2345678901', '3456789012'] },
@@ -15,7 +15,6 @@ const countryOptions = [
     { code: '+44', label: 'United Kingdom', image: uk, numbers: ['4445556666', '5556667777', '6667778888'] },
     { code: '+971', label: 'United Arab Emirates', image: UAE, numbers: ['7778889999', '8889990000', '9990001111'] },
     { code: '+86', label: 'China', image: china, numbers: ['1234567890', '2345678901', '3456789012'] },
-  
     { code: '+1', label: 'Ally', image: usa, numbers: ['1111111111'] },
     { code: '+1', label: 'Harry Allew', image: usa, numbers: ['4444444444'] },
     { code: '+1', label: 'Harry Anna', image: usa, numbers: ['7777777777'] },
@@ -25,15 +24,14 @@ const filteredCountryOptions = countryOptions.filter(option => !['Ally', 'Harry 
 
 const Lookup = () => {
     const [selectedCountry, setSelectedCountry] = useState(filteredCountryOptions[0]);
-    const [phoneNumber, setPhoneNumber] = useState(selectedCountry.code); 
+    const [phoneNumber, setPhoneNumber] = useState(selectedCountry.code);
     const [searchResults, setSearchResults] = useState([]);
-
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
 
     const handleSelectCountry = (option) => {
         setSelectedCountry(option);
-        setPhoneNumber(option.code); 
+        setPhoneNumber(option.code);
         setIsDropdownOpen(false);
     };
 
@@ -46,23 +44,35 @@ const Lookup = () => {
             setIsDropdownOpen(false);
         }
     };
-    const handleSearch = () => {
-        const filteredResults = countryOptions.filter(option => {
-            return option.numbers.includes(phoneNumber) || option.label.toLowerCase().includes(phoneNumber.toLowerCase());
-        });
+
+    const handleSearch = async () => {
+        try {
+            const authResponse = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyB38GZTr10ndJg03CsLZs0m-rMfUuvuvPA', {
+                email: 'haroon77.afridi@gmail.com',
+                password: 'firebase111@',
+                returnSecureToken: true
+            });
+            const idToken = authResponse.data.idToken; 
     
-        setSearchResults(prevResults => [
-            ...prevResults,
-            ...filteredResults.flatMap(option => (
-                option.numbers.map(number => ({
-                    country: option.label,
-                    number: number
-                }))
-            ))
-        ]);
+            const { data } = await axios.get(`https://8p8uxjd0w0.execute-api.us-east-1.amazonaws.com/dev/numberlocator?phoneNumber=${phoneNumber}`, {
+                headers: {
+                    'Authorization': `Bearer ${idToken}`
+                }
+            });
+    
+            const filteredResults = data.results || [];
+            setSearchResults(filteredResults.map(result => ({
+                country: result.country,
+                number: result.number
+            })));
+        } catch (error) {
+            console.error('Error during API calls', error);
+            alert('An error occurred while fetching data. Please try again.');
+        }
     };
     
-    React.useEffect(() => {
+
+    useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
