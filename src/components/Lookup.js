@@ -10,14 +10,14 @@ import UAE from './images/Uae.png';
 import axios from 'axios';
 
 const countryOptions = [
-    { code: '+1', label: 'United States', image: usa, numbers: ['1234567890', '2345678901', '3456789012'] },
+    // { code: '+1', label: 'United States', image: usa, numbers: ['1234567890', '2345678901', '3456789012'] },
     { code: '+92', label: 'Pakistan', image: pak, numbers: ['1112223333', '2223334444', '3334445555'] },
-    { code: '+44', label: 'United Kingdom', image: uk, numbers: ['4445556666', '5556667777', '6667778888'] },
-    { code: '+971', label: 'United Arab Emirates', image: UAE, numbers: ['7778889999', '8889990000', '9990001111'] },
-    { code: '+86', label: 'China', image: china, numbers: ['1234567890', '2345678901', '3456789012'] },
-    { code: '+1', label: 'Ally', image: usa, numbers: ['1111111111'] },
-    { code: '+1', label: 'Harry Allew', image: usa, numbers: ['4444444444'] },
-    { code: '+1', label: 'Harry Anna', image: usa, numbers: ['7777777777'] },
+    // { code: '+44', label: 'United Kingdom', image: uk, numbers: ['4445556666', '5556667777', '6667778888'] },
+    // { code: '+971', label: 'United Arab Emirates', image: UAE, numbers: ['7778889999', '8889990000', '9990001111'] },
+    // { code: '+86', label: 'China', image: china, numbers: ['1234567890', '2345678901', '3456789012'] },
+    // { code: '+1', label: 'Ally', image: usa, numbers: ['1111111111'] },
+    // { code: '+1', label: 'Harry Allew', image: usa, numbers: ['4444444444'] },
+    // { code: '+1', label: 'Harry Anna', image: usa, numbers: ['7777777777'] },
 ];
 
 const filteredCountryOptions = countryOptions.filter(option => !['Ally', 'Harry Allew', 'Harry Anna'].includes(option.label));
@@ -52,9 +52,17 @@ const Lookup = () => {
                 password: 'firebase111@',
                 returnSecureToken: true
             });
-            const idToken = authResponse.data.idToken; 
+            const idToken = authResponse.data.idToken;
     
-            const { data } = await axios.get(`https://8p8uxjd0w0.execute-api.us-east-1.amazonaws.com/dev/numberlocator?phoneNumber=${phoneNumber}`, {
+            let formattedPhoneNumber = phoneNumber;
+    
+            if (phoneNumber.startsWith('03')) {
+                formattedPhoneNumber = '+92' + phoneNumber.slice(1);
+            }
+    
+            formattedPhoneNumber = formattedPhoneNumber.replace('+', '%2B');
+    
+            const { data } = await axios.get(`https://8p8uxjd0w0.execute-api.us-east-1.amazonaws.com/dev/numberlocator?phoneNumber=${formattedPhoneNumber}`, {
                 headers: {
                     'Authorization': `Bearer ${idToken}`
                 }
@@ -70,6 +78,7 @@ const Lookup = () => {
             alert('An error occurred while fetching data. Please try again.');
         }
     };
+    
     
 
     useEffect(() => {
@@ -103,6 +112,7 @@ const Lookup = () => {
                                         </div>
                                     ))}
                                 </div>
+                                
                             )}
                         </div>
                         <input

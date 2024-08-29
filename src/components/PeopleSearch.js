@@ -10,11 +10,11 @@ import china from './images/china.png';
 import UAE from './images/Uae.png';
 
 const countryOptions = [
-    { code: '+1', label: 'United States', image: usa },
+    // { code: '+1', label: 'United States', image: usa },
     { code: '+0', label: 'Pakistan', image: pak },
-    { code: '+0', label: 'United Kingdom', image: uk },
-    { code: '+0', label: 'United Arab Emirates', image: UAE },
-    { code: '+0', label: 'China', image: china },
+    // { code: '+0', label: 'United Kingdom', image: uk },
+    // { code: '+0', label: 'United Arab Emirates', image: UAE },
+    // { code: '+0', label: 'China', image: china },
 ];
 
 const PeopleSearch = () => {
