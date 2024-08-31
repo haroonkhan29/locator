@@ -2,22 +2,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import './MainPage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
-import usa from './images/usa.png';
 import pak from './images/pak.png';
-import uk from './images/uk.png';
-import china from './images/china.png';
-import UAE from './images/Uae.png';
 import axios from 'axios';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const countryOptions = [
-    // { code: '+1', label: 'United States', image: usa, numbers: ['1234567890', '2345678901', '3456789012'] },
     { code: '+92', label: 'Pakistan', image: pak, numbers: ['1112223333', '2223334444', '3334445555'] },
-    // { code: '+44', label: 'United Kingdom', image: uk, numbers: ['4445556666', '5556667777', '6667778888'] },
-    // { code: '+971', label: 'United Arab Emirates', image: UAE, numbers: ['7778889999', '8889990000', '9990001111'] },
-    // { code: '+86', label: 'China', image: china, numbers: ['1234567890', '2345678901', '3456789012'] },
-    // { code: '+1', label: 'Ally', image: usa, numbers: ['1111111111'] },
-    // { code: '+1', label: 'Harry Allew', image: usa, numbers: ['4444444444'] },
-    // { code: '+1', label: 'Harry Anna', image: usa, numbers: ['7777777777'] },
 ];
 
 const filteredCountryOptions = countryOptions.filter(option => !['Ally', 'Harry Allew', 'Harry Anna'].includes(option.label));
@@ -53,35 +43,50 @@ const Lookup = () => {
                 returnSecureToken: true
             });
             const idToken = authResponse.data.idToken;
-    
+
             let formattedPhoneNumber = phoneNumber;
-    
+
             if (phoneNumber.startsWith('03')) {
                 formattedPhoneNumber = '+92' + phoneNumber.slice(1);
             }
-    
+
             formattedPhoneNumber = formattedPhoneNumber.replace('+', '%2B');
-    
+
             const { data } = await axios.get(`https://8p8uxjd0w0.execute-api.us-east-1.amazonaws.com/dev/numberlocator?phoneNumber=${formattedPhoneNumber}`, {
                 headers: {
                     'Authorization': `Bearer ${idToken}`
                 }
             });
-    
-            const filteredResults = data.results || [];
-            setSearchResults(filteredResults.map(result => ({
-                country: result.country,
-                number: result.number
-            })));
+
+            const responseData = data.responseData || {};
+            const searchResults = [{
+                cnic: responseData.cnic ? responseData.cnic.trim() : 'N/A',
+                name: responseData.name ? responseData.name.trim() : 'N/A',
+                country: responseData.country || 'N/A',
+                phone: responseData.phone || 'N/A'
+            }];
+            
+            localStorage.setItem('searchResults', JSON.stringify(searchResults));
+            setSearchResults(searchResults);
+            
         } catch (error) {
             console.error('Error during API calls', error);
             alert('An error occurred while fetching data. Please try again.');
         }
     };
-    
-    
+
+    const handleDelete = (index) => {
+        const updatedResults = searchResults.filter((_, i) => i !== index);
+        setSearchResults(updatedResults);
+        localStorage.setItem('searchResults', JSON.stringify(updatedResults));
+    };
 
     useEffect(() => {
+        const savedResults = localStorage.getItem('searchResults');
+        if (savedResults) {
+            setSearchResults(JSON.parse(savedResults));
+        }
+
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
@@ -112,7 +117,6 @@ const Lookup = () => {
                                         </div>
                                     ))}
                                 </div>
-                                
                             )}
                         </div>
                         <input
@@ -128,14 +132,24 @@ const Lookup = () => {
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Phone Number</th>
+                                    <th>Phone</th>
+                                    <th>CNIC</th>
+                                    <th>Country</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {searchResults.map((result, index) => (
                                     <tr key={index}>
+                                        <td>{result.name}</td>
+                                        <td>{result.phone}</td>
+                                        <td>{result.cnic}</td>
                                         <td>{result.country}</td>
-                                        <td>{result.number}</td>
+                                        <td>
+                                            <button onClick={() => handleDelete(index)} className="delete-button">
+                                                <DeleteIcon style={{ color: 'white' }} />
+                                            </button>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>

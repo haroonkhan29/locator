@@ -411,6 +411,13 @@
     height: 100px;
     animation: spin 1s linear infinite;
 }
+.delete-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: #FF7A00; 
+}
 
 @keyframes spin {
     0% {

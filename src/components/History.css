@@ -22,7 +22,6 @@
     font-weight: bold;
   }
   
-  /* Responsive Design */
   @media screen and (max-width: 768px) {
     .result-table {
       padding: 10px;
