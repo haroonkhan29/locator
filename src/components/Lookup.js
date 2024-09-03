@@ -3,7 +3,7 @@ import './MainPage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import pak from './images/pak.png';
-import DeleteIcon from '@mui/icons-material/Delete';
+// import DeleteIcon from '@mui/icons-material/Delete';
 
 const countryOptions = [
     { code: '+92', label: 'Pakistan', image: pak, numbers: ['1112223333', '2223334444', '3334445555'] },
@@ -155,7 +155,7 @@ const Lookup = () => {
                                         <td>{result.country}</td>
                                         <td>
                                             <button onClick={() => handleDelete(index)} className="delete-button">
-                                                <DeleteIcon style={{ color: 'white' }} />
+                                                {/* <DeleteIcon style={{ color: 'white' }} /> */}
                                             </button>
                                         </td>
                                     </tr>
