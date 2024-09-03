@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import './MainPage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+
 import pak from './images/pak.png';
 // import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -154,9 +156,9 @@ const Lookup = () => {
                                         <td>{result.cnic}</td>
                                         <td>{result.country}</td>
                                         <td>
-                                            <button onClick={() => handleDelete(index)} className="delete-button">
-                                                {/* <DeleteIcon style={{ color: 'white' }} /> */}
-                                            </button>
+                                        <button onClick={() => handleDelete(index)} className="delete-button">
+    <FontAwesomeIcon icon={faTrash} style={{ color: 'white' }} />
+</button>
                                         </td>
                                     </tr>
                                 ))}
