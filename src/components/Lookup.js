@@ -3,7 +3,6 @@ import './MainPage.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import pak from './images/pak.png';
-import axios from 'axios';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const countryOptions = [
@@ -37,12 +36,20 @@ const Lookup = () => {
 
     const handleSearch = async () => {
         try {
-            const authResponse = await axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyB38GZTr10ndJg03CsLZs0m-rMfUuvuvPA', {
-                email: 'haroon77.afridi@gmail.com',
-                password: 'firebase111@',
-                returnSecureToken: true
+            const authResponse = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyB38GZTr10ndJg03CsLZs0m-rMfUuvuvPA', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: 'haroon77.afridi@gmail.com',
+                    password: 'firebase111@',
+                    returnSecureToken: true,
+                }),
             });
-            const idToken = authResponse.data.idToken;
+            
+            const authData = await authResponse.json();
+            const idToken = authData.idToken;
 
             let formattedPhoneNumber = phoneNumber;
 
@@ -52,23 +59,24 @@ const Lookup = () => {
 
             formattedPhoneNumber = formattedPhoneNumber.replace('+', '%2B');
 
-            const { data } = await axios.get(`https://8p8uxjd0w0.execute-api.us-east-1.amazonaws.com/dev/numberlocator?phoneNumber=${formattedPhoneNumber}`, {
+            const response = await fetch(`https://8p8uxjd0w0.execute-api.us-east-1.amazonaws.com/dev/numberlocator?phoneNumber=${formattedPhoneNumber}`, {
                 headers: {
-                    'Authorization': `Bearer ${idToken}`
-                }
+                    'Authorization': `Bearer ${idToken}`,
+                },
             });
 
+            const data = await response.json();
             const responseData = data.responseData || {};
             const searchResults = [{
                 cnic: responseData.cnic ? responseData.cnic.trim() : 'N/A',
                 name: responseData.name ? responseData.name.trim() : 'N/A',
                 country: responseData.country || 'N/A',
-                phone: responseData.phone || 'N/A'
+                phone: responseData.phone || 'N/A',
             }];
-            
+
             localStorage.setItem('searchResults', JSON.stringify(searchResults));
             setSearchResults(searchResults);
-            
+
         } catch (error) {
             console.error('Error during API calls', error);
             alert('An error occurred while fetching data. Please try again.');
