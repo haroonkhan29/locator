@@ -11,7 +11,7 @@ const Tracker = () => {
                         {/* <select> */}
                         {/* <option value="+1" data-image={us}>🇺🇸 +1</option> */}
                         {/* </select> */}
-                        <input type="text" placeholder="IP Adress" />
+                        <input type="text" placeholder="IP Address" />
                         <button type="submit">Search</button>
                     </form>
                 </div>

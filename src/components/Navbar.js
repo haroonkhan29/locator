@@ -62,7 +62,7 @@ const Navbar = () => {
             </div>
             <ul className={`navbar-menu ${isMenuOpen ? 'open' : ''}`}>
                 <li><Link to="/" style={{ color: getNavbarStyle().color }} onClick={() => handleMenuClick("home")} className={activeMenu === "home" ? "active" : ""}>Home</Link></li>
-                <li><Link to="/lookup" style={{ color: getNavbarStyle().color }} onClick={() => handleMenuClick("lookup")} className={activeMenu === "lookup" ? "active" : ""}>Lookup</Link></li>
+                <li><Link to="/lookup" style={{ color: getNavbarStyle().color }} onClick={() => handleMenuClick("lookup")} className={activeMenu === "lookup" ? "active" : ""}>Number Locator</Link></li>
                 <li><Link to="/ip-tracker" style={{ color: getNavbarStyle().color }} onClick={() => handleMenuClick("ip-tracker")} className={activeMenu === "ip-tracker" ? "active" : ""}>IP Tracker</Link></li>
                 <li><Link to="/isd-codes" style={{ color: getNavbarStyle().color }} onClick={() => handleMenuClick("isd-codes")} className={activeMenu === "isd-codes" ? "active" : ""}>ISD Codes</Link></li>
                 <li><Link to="/people-search" style={{ color: getNavbarStyle().color }} onClick={() => handleMenuClick("people-search")} className={activeMenu === "people-search" ? "active" : ""}>People Search</Link></li>

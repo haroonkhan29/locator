@@ -180,6 +180,23 @@
     height: 100px;
     animation: spin 1s linear infinite;
 }
+.copy-success-message {
+    margin-top: 10px;
+    color: rgb(232, 255, 25);
+    font-size: 14px;
+}
+
+.phone-input-container {
+    color: blue;  
+}
+.dropdown-search {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
 
 @keyframes spin {
     0% { transform: rotate(0deg); }
