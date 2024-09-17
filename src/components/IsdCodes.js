@@ -200,6 +200,7 @@ const countryOptions = [
 ];
 
 const filteredCountryOptions = countryOptions.filter(option => !['Ally', 'Harry Allew', 'Harry Anna'].includes(option.label));
+
 const IsdCodes = () => {
     const [selectedCountry, setSelectedCountry] = useState({ code: '(+93)', countryCode: 'af', label: 'Afghanistan' });
     const [phoneNumber, setPhoneNumber] = useState(selectedCountry.code);
@@ -249,20 +250,31 @@ const IsdCodes = () => {
     const handleToggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
-
     const handleCopyCode = () => {
-        navigator.clipboard.writeText(selectedCountry.code)
-            .then(() => {
-                setCopySuccess('ISD code is Copied');
-                setTimeout(() => setCopySuccess(''), 3000);
-            })
-            .catch(err => {
-                console.error('Failed to copy: ', err);
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(phoneNumber)
+                .then(() => {
+                    setCopySuccess('ISD code is copied!');
+                    setTimeout(() => setCopySuccess(''), 3000); 
+                })
+                .catch(() => {
+                    setCopySuccess('Failed to copy code.');
+                });
+        } else {
+            const textArea = document.createElement('textarea');
+            textArea.value = phoneNumber;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                setCopySuccess('ISD code is copied!');
+            } catch (err) {
                 setCopySuccess('Failed to copy code.');
-                setTimeout(() => setCopySuccess(''), 3000);
-            });
+            }
+            document.body.removeChild(textArea);
+        }
     };
-
+    
     return (
         <>
             <div className="main-page">
@@ -310,17 +322,7 @@ const IsdCodes = () => {
                         />
                         <button type="submit">Copy</button>
                     </form>
-                   {copySuccess && (
-    <div
-        style={{
-            marginTop: '10px',
-            color: 'rgb(232, 255, 25)',
-            fontSize: '14px',
-        }}
-    >
-        {copySuccess}
-    </div>
-)}
+                    {copySuccess && <div className="copy-success">{copySuccess}</div>}
                 </div>
             </div>
             <div className='lookup'>

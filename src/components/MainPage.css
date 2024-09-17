@@ -200,7 +200,12 @@
     border-radius: 4px;
     box-sizing: border-box;
 }
-
+.copy-success
+{
+    margin-top: 10px;
+    color: yellow;
+    font-size: 15px;
+}
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
