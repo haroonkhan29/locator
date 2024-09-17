@@ -150,7 +150,7 @@ const countryOptions = [
     { code: '+685', label: 'Samoa', countryCode: 'ws' },
     { code: '+378', label: 'San Marino', countryCode: 'sm' },
     { code: '+239', label: 'Sao Tome and Principe', countryCode: 'st' },
- { code: '+966', label: 'Saudi Arabia', countryCode: 'sa' },
+    { code: '+966', label: 'Saudi Arabia', countryCode: 'sa' },
     { code: '+221', label: 'Senegal', countryCode: 'sn' },
     { code: '+381', label: 'Serbia', countryCode: 'rs' },
     { code: '+248', label: 'Seychelles', countryCode: 'sc' },
@@ -202,11 +202,32 @@ const countryOptions = [
 const filteredCountryOptions = countryOptions.filter(option => !['Ally', 'Harry Allew', 'Harry Anna'].includes(option.label));
 
 const Lookup = () => {
-    const [selectedCountry, setSelectedCountry] = useState(filteredCountryOptions[0]);
-    const [phoneNumber, setPhoneNumber] = useState(selectedCountry.code);
+    const [selectedCountry, setSelectedCountry] = useState({ code: '(+93)', countryCode: 'af', label: 'Afghanistan' });
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filteredCountryOptions, setFilteredCountryOptions] = useState([]);
     const [searchResults, setSearchResults] = useState([]);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false); 
     const dropdownRef = useRef(null);
+
+    useEffect(() => {
+        const normalizedQuery = searchQuery.toLowerCase();
+        const matchingCountries = countryOptions.filter(option =>
+            option.label.toLowerCase().includes(normalizedQuery)
+        );
+
+        const sortedCountries = matchingCountries.sort((a, b) => {
+            const aStartsWithQuery = a.label.toLowerCase().startsWith(normalizedQuery.charAt(0));
+            const bStartsWithQuery = b.label.toLowerCase().startsWith(normalizedQuery.charAt(0));
+
+            if (aStartsWithQuery && !bStartsWithQuery) return -1;
+            if (!aStartsWithQuery && bStartsWithQuery) return 1;
+            return a.label.localeCompare(b.label);
+        });
+
+        setFilteredCountryOptions(sortedCountries);
+    }, [searchQuery]);
 
     const handleSelectCountry = (option) => {
         setSelectedCountry(option);
@@ -225,51 +246,71 @@ const Lookup = () => {
     };
 
     const handleSearch = async () => {
-        try {
-            const authResponse = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyB38GZTr10ndJg03CsLZs0m-rMfUuvuvPA', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    email: 'haroon77.afridi@gmail.com',
-                    password: 'firebase111@',
-                    returnSecureToken: true,
-                }),
-            });
-            
-            const authData = await authResponse.json();
-            const idToken = authData.idToken;
+        setIsLoading(true);  
+        
+        if (phoneNumber.startsWith('+92') || phoneNumber.startsWith('03')) {
+            try {
+                const authResponse = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyB38GZTr10ndJg03CsLZs0m-rMfUuvuvPA', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: 'haroon77.afridi@gmail.com',
+                        password: 'firebase111@',
+                        returnSecureToken: true,
+                    }),
+                });
 
-            let formattedPhoneNumber = phoneNumber;
+                const authData = await authResponse.json();
+                const idToken = authData.idToken;
 
-            if (phoneNumber.startsWith('03')) {
-                formattedPhoneNumber = '+92' + phoneNumber.slice(1);
+                let formattedPhoneNumber = phoneNumber;
+
+                if (phoneNumber.startsWith('03')) {
+                    formattedPhoneNumber = '+92' + phoneNumber.slice(1);
+                }
+
+                const apiFormattedNumber = formattedPhoneNumber.replace('+', '%2B');
+
+                const response = await fetch(`https://8p8uxjd0w0.execute-api.us-east-1.amazonaws.com/dev/numberlocator?phoneNumber=${apiFormattedNumber}`, {
+                    headers: {
+                        'Authorization': `Bearer ${idToken}`,
+                    },
+                });
+
+                const data = await response.json();
+                const responseData = data.responseData || {};
+
+                const searchResults = [{
+                    cnic: responseData.cnic ? responseData.cnic.trim() : 'N/A',
+                    name: responseData.name ? responseData.name.trim() : 'N/A',
+                    country: 'Pakistan',
+                    phone: formattedPhoneNumber || 'N/A',
+                }];
+
+                localStorage.setItem('searchResults', JSON.stringify(searchResults));
+                setSearchResults(searchResults);
+
+            } catch (error) {
+                console.error('Error during API calls', error);
+                alert('An error occurred while fetching data. Please try again.');
+            } finally {
+                setIsLoading(false);  
             }
+        } else {
+            setTimeout(() => {
+                const searchResults = [{
+                    name: phoneNumber || 'N/A', 
+                    phone: phoneNumber || 'N/A', 
+                    cnic: 'N/A',
+                    country: selectedCountry.label || 'N/A',  
+                }];
 
-            formattedPhoneNumber = formattedPhoneNumber.replace('+', '%2B');
-
-            const response = await fetch(`https://8p8uxjd0w0.execute-api.us-east-1.amazonaws.com/dev/numberlocator?phoneNumber=${formattedPhoneNumber}`, {
-                headers: {
-                    'Authorization': `Bearer ${idToken}`,
-                },
-            });
-
-            const data = await response.json();
-            const responseData = data.responseData || {};
-            const searchResults = [{
-                cnic: responseData.cnic ? responseData.cnic.trim() : 'N/A',
-                name: responseData.name ? responseData.name.trim() : 'N/A',
-                country: responseData.country || 'N/A',
-                phone: responseData.phone || 'N/A',
-            }];
-
-            localStorage.setItem('searchResults', JSON.stringify(searchResults));
-            setSearchResults(searchResults);
-
-        } catch (error) {
-            console.error('Error during API calls', error);
-            alert('An error occurred while fetching data. Please try again.');
+                localStorage.setItem('searchResults', JSON.stringify(searchResults));
+                setSearchResults(searchResults);  
+                setIsLoading(false);  
+            }, 1000); 
         }
     };
 
@@ -308,11 +349,18 @@ const Lookup = () => {
                             </div>
                             {isDropdownOpen && (
                                 <div className="dropdown-menu">
+                                    <input
+                                        type="text"
+                                        className="dropdown-search"
+                                        placeholder="Search country..."
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                    />
                                     {filteredCountryOptions.map((option) => (
                                         <div key={option.code} className="dropdown-item" onClick={() => handleSelectCountry(option)}>
                                             <img src={`https://flagcdn.com/48x36/${option.countryCode}.png`} alt={option.label} />
                                             <span>{option.label}</span>
-                                            <span style={{ color: 'white', marginLeft: '10px' }}>{option.code}</span> 
+                                            <span style={{ color: 'white', marginLeft: '10px' }}>{option.code}</span>
                                         </div>
                                     ))}
                                 </div>
@@ -324,36 +372,48 @@ const Lookup = () => {
                             value={phoneNumber}
                             onChange={(e) => setPhoneNumber(e.target.value)}
                         />
-                        <button type="button" onClick={handleSearch}>Search</button>
+                        <button type="button" onClick={handleSearch} disabled={isLoading}>Search</button>
                     </form>
-                    <div className="search-results">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Phone</th>
-                                    <th>CNIC</th>
-                                    <th>Country</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {searchResults.map((result, index) => (
-                                    <tr key={index}>
-                                        <td>{result.name}</td>
-                                        <td>{result.phone}</td>
-                                        <td>{result.cnic}</td>
-                                        <td>{result.country}</td>
-                                        <td>
-                                            <button onClick={() => handleDelete(index)} className="delete-button">
-                                                <FontAwesomeIcon icon={faTrash} style={{ color: 'white' }} />
-                                            </button>
-                                        </td>
+
+                    {isLoading && (
+                        <div className="loading-screen">
+                            <div className="loading-spinner">
+                                <div className="spinner-circle"></div>
+                            </div>
+                            <p>Loading...</p>
+                        </div>
+                    )}
+
+                    {!isLoading && (
+                        <div className="search-results">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Phone</th>
+                                        <th>CNIC</th>
+                                        <th>Country</th>
+                                        <th>Action</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody>
+                                    {searchResults.map((result, index) => (
+                                        <tr key={index}>
+                                            <td>{result.name}</td>
+                                            <td>{result.phone}</td>
+                                            <td>{result.cnic}</td>
+                                            <td>{result.country}</td>
+                                            <td>
+                                                <button onClick={() => handleDelete(index)} className="delete-button">
+                                                    <FontAwesomeIcon icon={faTrash} style={{ color: 'white' }} />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
                 </div>
             </div>
             <div className='lookup'>

@@ -311,8 +311,16 @@ const IsdCodes = () => {
                         <button type="submit">Copy</button>
                     </form>
                     {copySuccess && (
-                        <div className="copy-success-message">{copySuccess}</div>
-                    )}
+    <div
+        style={{
+            marginTop: '10px',
+            color: 'rgb(232, 255, 25)',
+            fontSize: '14px',
+        }}
+    >
+        {copySuccess}
+    </div>
+)}
                 </div>
             </div>
             <div className='lookup'>

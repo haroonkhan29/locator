@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './History.css';
+import { Margin } from '@mui/icons-material';
 
 const History = () => {
-    const searchResult = {
-        name: 'W.A. Mcintosh',
-        city: 'Live in Ocala, FL',
-        dob: 'Born on March 4th 1946 (77 Years Old)',
-        residence: 'Ocala, FL 34453',
-        lastUpdated: 'Last Updated 12 Years Ago',
-        header: 'W.A. Mcintosh',
-        header1: 'in the United State of America'
+    const [activeTab, setActiveTab] = useState('numberHistory');
+
+    const numberHistory = [
+        { phone: "+971507724737", date: "16-09-2024 13:19 PM" },
+        { phone: "+923415349554", date: "16-09-2024 13:17 PM" }
+    ];
+
+    const handleTabClick = (tab) => {
+        setActiveTab(tab);
     };
 
     return (
@@ -18,44 +20,48 @@ const History = () => {
                 <div className="phone-locator">
                     <h1>Phone Number Locator</h1>
                     <p>Number Details and IP Tracker</p>
-                    {/* <form className="phone-form">
-                        <input type="text" placeholder="IP Address" />
-                        <button type="submit">Search</button>
-                    </form> */}
                 </div>
             </div>
-                <div className="searchs-results">
-                    <h2 className="name-header2">{searchResult.header}</h2>
-                    <p className="name-header3">{searchResult.header1}</p>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th className="name-header1" colSpan="2">{searchResult.lastUpdated}</th>
-                            </tr>
-                            <tr>
-                                <th className="name-header" colSpan="2">{searchResult.name}</th>
-                            </tr>
-                            <tr>
-                                <td>Name:</td>
-                                <td>{searchResult.name}</td>
-                            </tr>
-                            <tr>
-                                <td>City:</td>
-                                <td>{searchResult.city}</td>
-                            </tr>
-                            <tr>
-                                <td>Date of Birth:</td>
-                                <td>{searchResult.dob}</td>
-                            </tr>
-                            <tr>
-                                <td>Residence:</td>
-                                <td>{searchResult.residence}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+
+            <div className="history-container">
+                <header className="history-header">
+                    <button className="back-button">←</button>
+                    <h1>History</h1>
+                </header>
+
+                <div className="history-tabs">
+                    <button
+                        className={`tab-btn ${activeTab === 'numberHistory' ? 'active' : ''}`}
+                        onClick={() => handleTabClick('numberHistory')}
+                    >
+                        Number History
+                    </button>
+                    <button
+                        className={`tab-btn ${activeTab === 'ipHistory' ? 'active' : ''}`}
+                        onClick={() => handleTabClick('ipHistory')}
+                    >
+                        IP History
+                    </button>
                 </div>
+                <div className="history-content">
+                    {activeTab === 'numberHistory' && numberHistory.map((item, index) => (
+                        <div key={index} className="history-card">
+                            <div className="icon-container">
+                                <img src="/assets/history-icon.png" alt="history icon" />
+                            </div>
+                            <div className="history-info">
+                                <p className="phone-number">{item.phone}</p>
+                                <p className="date">{item.date}</p>
+                            </div>
+                            <button className="delete-button">
+                                <img src="/assets/trash-icon.png" alt="delete" />
+                            </button>
+                        </div>
+                    ))}
+                </div>
+            </div>
         </>
     );
-}
+};
 
 export default History;

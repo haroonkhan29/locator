@@ -1,31 +1,133 @@
-.result-table {
-    background-color: white; 
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 800px; 
-    margin: 0 auto; 
+.history-container {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+  background-color: #ffffff;
 }
-  
-  .info-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .info-table td {
-    padding: 8px;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .label {
-    font-weight: bold;
-  }
-  
-  @media screen and (max-width: 768px) {
-    .result-table {
+
+.history-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.history-header h1 {
+  margin-left: 10px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.history-tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  background-color: #fff;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: #007bff;
+  border-bottom: 3px solid transparent;
+  transition: 0.3s ease;
+}
+
+.tab-btn.active {
+  background-color: #007bff;
+  color: white;
+  border-bottom-color: #007bff;
+}
+
+.tab-btn:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+.history-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.history-card {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.history-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.icon-container img {
+  width: 40px;
+  height: 40px;
+}
+
+.history-info {
+  flex: 1;
+  margin-left: 15px;
+}
+
+.phone-number {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.date {
+  font-size: 14px;
+  color: gray;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.delete-button img {
+  width: 24px;
+  height: 24px;
+}
+
+@media (max-width: 600px) {
+  .history-container {
       padding: 10px;
-      max-width: 90%;
-    }
   }
-  
+
+  .history-card {
+      padding: 10px;
+  }
+
+  .phone-number {
+      font-size: 14px;
+  }
+
+  .date {
+      font-size: 12px;
+  }
+
+  .delete-button img {
+      width: 20px;
+      height: 20px;
+  }
+}

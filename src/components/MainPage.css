@@ -180,10 +180,13 @@
     height: 100px;
     animation: spin 1s linear infinite;
 }
-.copy-success-message {
-    margin-top: 10px;
-    color: rgb(232, 255, 25);
-    font-size: 14px;
+
+.loading-spinner {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+    color: #007bff; 
 }
 
 .phone-input-container {
