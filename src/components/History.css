@@ -1,86 +1,83 @@
 .history-container {
-  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
   padding: 20px;
-  max-width: 500px;
+  max-width: 1200px;
   margin: 0 auto;
-  background-color: #ffffff;
 }
-
-.history-header {
+.history-card .icon-container {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  margin-bottom: 20px;
+  justify-content: center;
+  transition: transform 0.3s, color 0.3s; 
+  cursor: pointer; 
 }
 
-.back-button {
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
+.history-card .icon-container:hover {
+  transform: rotate(45deg); 
+  color: #2196F3; 
+  background-color:#2196F3;
+  border-radius: 50%;
 }
 
-.history-header h1 {
-  margin-left: 10px;
-  font-size: 22px;
-  font-weight: 600;
+.history-card .icon-container .MuiSvgIcon-root {
+  font-size: 30px; 
 }
 
 .history-tabs {
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
-  border-bottom: 1px solid #e0e0e0;
 }
 
 .tab-btn {
-  flex: 1;
-  padding: 10px;
-  font-size: 16px;
-  background-color: #fff;
+  background-color: #ffffff;
+  color: rgb(3, 116, 255);
   border: none;
-  outline: none;
+  padding: 20px 30px;
+  margin: 0 10px;
+  font-size: 16px;
   cursor: pointer;
-  color: #007bff;
-  border-bottom: 3px solid transparent;
-  transition: 0.3s ease;
+  border-radius: 0px;
+  transition: background-color 0.3s ease;
 }
 
 .tab-btn.active {
-  background-color: #007bff;
-  color: white;
-  border-bottom-color: #007bff;
-}
+  background-color: #007bff; 
+  color: white; 
+  border-bottom-color: #007bff; 
+} 
 
 .tab-btn:hover {
-  background-color: #0056b3;
-  color: white;
-}
+background-color: #0056b3; 
+color: white; 
 
+}
 .history-content {
   display: flex;
   flex-direction: column;
-  gap: 10px;
 }
 
 .history-card {
   display: flex;
   align-items: center;
-  padding: 15px;
+  justify-content: space-between;
+  padding: 0px;
+  border: 1px solid #d4d3d3;
+  border-radius: 0px;
+  margin-bottom: 15px;
   background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: box-shadow 0.3s ease;
 }
 
 .history-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.icon-container img {
-  width: 40px;
-  height: 40px;
+.icon-container {
+  display: flex;
+  align-items: center;
+ 
 }
 
 .history-info {
@@ -89,13 +86,13 @@
 }
 
 .phone-number {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .date {
+  color: #666;
   font-size: 14px;
-  color: gray;
 }
 
 .delete-button {
@@ -104,30 +101,29 @@
   cursor: pointer;
 }
 
-.delete-button img {
-  width: 24px;
-  height: 24px;
+.delete-button:hover {
+  opacity: 0.7;
 }
 
 @media (max-width: 600px) {
   .history-container {
-      padding: 10px;
+    padding: 10px;
   }
 
   .history-card {
-      padding: 10px;
+    padding: 10px;
   }
 
   .phone-number {
-      font-size: 14px;
+    font-size: 14px;
   }
 
   .date {
-      font-size: 12px;
+    font-size: 12px;
   }
 
   .delete-button img {
-      width: 20px;
-      height: 20px;
+    width: 20px;
+    height: 20px;
   }
 }

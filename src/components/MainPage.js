@@ -261,37 +261,42 @@ const MainPage = () => {
                         returnSecureToken: true,
                     }),
                 });
-
+    
                 const authData = await authResponse.json();
                 const idToken = authData.idToken;
-
+    
                 let formattedPhoneNumber = phoneNumber;
-
+    
                 if (phoneNumber.startsWith('03')) {
                     formattedPhoneNumber = '+92' + phoneNumber.slice(1);
                 }
-
+    
                 const apiFormattedNumber = formattedPhoneNumber.replace('+', '%2B');
-
+    
                 const response = await fetch(`https://8p8uxjd0w0.execute-api.us-east-1.amazonaws.com/dev/numberlocator?phoneNumber=${apiFormattedNumber}`, {
                     headers: {
                         'Authorization': `Bearer ${idToken}`,
                     },
                 });
-
+    
                 const data = await response.json();
                 const responseData = data.responseData || {};
-
+    
                 const searchResults = [{
                     cnic: responseData.cnic ? responseData.cnic.trim() : 'N/A',
                     name: responseData.name ? responseData.name.trim() : 'N/A',
                     country: 'Pakistan',
                     phone: formattedPhoneNumber || 'N/A',
                 }];
-
+    
                 localStorage.setItem('searchResults', JSON.stringify(searchResults));
                 setSearchResults(searchResults);
-
+    
+                const currentDateTime = new Date().toLocaleString(); 
+                const numberHistory = JSON.parse(localStorage.getItem('numberHistory')) || [];
+                numberHistory.push({ phone: formattedPhoneNumber, date: currentDateTime });
+                localStorage.setItem('numberHistory', JSON.stringify(numberHistory));
+    
             } catch (error) {
                 console.error('Error during API calls', error);
                 alert('An error occurred while fetching data. Please try again.');
@@ -306,14 +311,20 @@ const MainPage = () => {
                     cnic: 'N/A',
                     country: selectedCountry.label || 'N/A',  
                 }];
-
+    
                 localStorage.setItem('searchResults', JSON.stringify(searchResults));
                 setSearchResults(searchResults);  
+                
+                const currentDateTime = new Date().toLocaleString(); 
+                const numberHistory = JSON.parse(localStorage.getItem('numberHistory')) || [];
+                numberHistory.push({ phone: phoneNumber, date: currentDateTime });
+                localStorage.setItem('numberHistory', JSON.stringify(numberHistory));
+    
                 setIsLoading(false);  
             }, 1000); 
         }
     };
-
+    
     const handleDelete = (index) => {
         const updatedResults = searchResults.filter((_, i) => i !== index);
         setSearchResults(updatedResults);

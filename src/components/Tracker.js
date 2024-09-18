@@ -7,7 +7,7 @@ const Tracker = () => {
     const [ip, setIp] = useState('');
     const [ipData, setIpData] = useState(null);
     const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false); 
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const savedIp = localStorage.getItem('ip');
@@ -21,11 +21,16 @@ const Tracker = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
-        setLoading(true); 
+        setLoading(true);
 
         try {
             const response = await axios.get(`https://ipinfo.io/${ip}/json`);
             const data = response.data;
+
+            // Update IP history
+            const ipHistory = JSON.parse(localStorage.getItem('ipHistory')) || [];
+            const newIpHistory = [{ ip: data.ip, date: new Date().toLocaleString() }, ...ipHistory];
+            localStorage.setItem('ipHistory', JSON.stringify(newIpHistory));
 
             localStorage.setItem('ip', ip);
             localStorage.setItem('ipData', JSON.stringify(data));
@@ -34,7 +39,7 @@ const Tracker = () => {
         } catch (err) {
             setError('Error fetching data. Please try again.');
         } finally {
-            setLoading(false); 
+            setLoading(false);
         }
     };
 
