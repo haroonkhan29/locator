@@ -49,7 +49,7 @@ const History = () => {
                 </div>
             </div>
 
-            {/* <div className="history-container">
+            <div className="history-container">
                 <div className="history-tabs">
                     <button
                         className={`tab-btn ${activeTab === 'numberHistory' ? 'active' : ''}`}
@@ -107,7 +107,7 @@ const History = () => {
                         </div>
                     ))}
                 </div>
-            </div> */}
+            </div>
         </>
     );
 };

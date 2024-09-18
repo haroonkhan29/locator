@@ -469,3 +469,187 @@
         height: auto;
     }
 }
+.isd-table {
+    width: 90%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+  }
+  
+  .isd-table th, .isd-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+    vertical-align: middle;
+  }
+  
+  .isd-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    color: #000000;
+  }
+  
+  .flag-icon {
+    width: 40px;
+    height: 25px;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  
+  .country-label {
+    font-size: 16px;
+    vertical-align: middle;
+  }
+  
+  .code-cell {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    position: relative; 
+  }
+  
+  .code-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .copy-wrapper {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ffffff;
+    font-size: 15px;
+    margin-right: 3px;
+  }
+  
+  .copy-icon {
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  .copy-icon:hover {
+    color: #007bff; 
+  }
+  
+  .copy-message {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ffffff;
+    background-color: #464646;
+    font-size: 15px;
+    margin-right: 70px;
+  }
+  
+  .search-bar {
+    width: 50%;
+    padding: 20px 0px; 
+    margin-bottom: 16px;
+    border: 1px solid #007bff; 
+    border-radius: 4px; 
+    background-color: #007bff; 
+    color: white;
+    font-size: 16px; 
+    text-align: center; 
+  }
+  
+  .search-bar::placeholder {
+    color: white; 
+  }
+  
+  .search-bar:focus {
+    outline: none; 
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5); 
+  }
+  
+  .search-bar:hover {
+    background-color: #0056b3; 
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 1200px) {
+    .isd-table {
+      width: 100%;
+    }
+  
+    .search-bar {
+      width: 80%;
+    }
+  }
+  
+  @media (max-width: 992px) {
+    .isd-table th, .isd-table td {
+      padding: 8px;
+    }
+  
+    .flag-icon {
+      width: 35px;
+      height: 20px;
+    }
+  
+    .country-label, .code-cell {
+      font-size: 14px;
+    }
+  
+    .search-bar {
+      width: 90%;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .search-bar {
+      width: 100%;
+      font-size: 14px;
+      padding: 15px 0px;
+    }
+  
+    .isd-table th, .isd-table td {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+    }
+  
+    .isd-table th {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+    }
+  
+    .isd-table td {
+      border: none;
+      position: relative;
+      padding-left: 50%;
+      text-align: right;
+    }
+  
+    .isd-table td::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 0;
+      width: 50%;
+      padding-left: 10px;
+      white-space: nowrap;
+      font-weight: bold;
+      text-align: left;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .flag-icon {
+      width: 30px;
+      height: 20px;
+    }
+  
+    .country-label, .code-cell {
+      font-size: 12px;
+    }
+  
+    .search-bar {
+      font-size: 12px;
+      padding: 10px 0px;
+    }
+  }
+  
