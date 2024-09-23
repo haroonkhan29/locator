@@ -23,9 +23,6 @@ const Navbar = ({ isLoginButtonClicked }) => {
             case '/isd-codes':
                 setActiveMenu('isd-codes');
                 break;
-            case '/people-search':
-                setActiveMenu('people-search');
-                break;
             case '/history':
                 setActiveMenu('history');
                 break;
@@ -42,7 +39,7 @@ const Navbar = ({ isLoginButtonClicked }) => {
     }, [location.pathname]);
 
     const getNavbarStyle = () => {
-        if (location.pathname === '/register' || (location.pathname === '/login' && isLoginButtonClicked)) {
+        if (location.pathname === '/register' || location.pathname === '/login') {
             return { backgroundColor: 'white', color: 'black' };
         } else {
             return {
@@ -53,7 +50,7 @@ const Navbar = ({ isLoginButtonClicked }) => {
     };
 
     const getButtonStyle = () => {
-        if (location.pathname === '/register' || (location.pathname === '/login' && isLoginButtonClicked)) {
+        if (location.pathname === '/register' || location.pathname === '/login') {
             return {
                 backgroundColor: 'white',
                 color: 'black',
@@ -76,6 +73,8 @@ const Navbar = ({ isLoginButtonClicked }) => {
         setIsMenuOpen(false);
     };
 
+    const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
+
     return (
         <nav className="navbar" style={getNavbarStyle()}>
             <div className="navbar-brand" style={{ color: getNavbarStyle().color }}>LOOKUP</div>
@@ -84,16 +83,15 @@ const Navbar = ({ isLoginButtonClicked }) => {
                     <FontAwesomeIcon icon={faBars} />
                 )}
             </div>
-            <ul className={`navbar-menu ${isMenuOpen ? 'open' : ''}`}>
+            <ul className={`navbar-menu ${isMenuOpen ? 'open' : ''} ${isAuthPage ? 'disabled' : ''}`}>
                 <li><Link to="/" style={{ color: getNavbarStyle().color }} onClick={closeMenu} className={activeMenu === "home" ? "active" : ""}>Home</Link></li>
                 <li><Link to="/lookup" style={{ color: getNavbarStyle().color }} onClick={closeMenu} className={activeMenu === "lookup" ? "active" : ""}>Number Locator</Link></li>
                 <li><Link to="/ip-tracker" style={{ color: getNavbarStyle().color }} onClick={closeMenu} className={activeMenu === "ip-tracker" ? "active" : ""}>IP Tracker</Link></li>
                 <li><Link to="/isd-codes" style={{ color: getNavbarStyle().color }} onClick={closeMenu} className={activeMenu === "isd-codes" ? "active" : ""}>ISD Codes</Link></li>
-                <li><Link to="/people-search" style={{ color: getNavbarStyle().color }} onClick={closeMenu} className={activeMenu === "people-search" ? "active" : ""}>People Search</Link></li>
                 <li><Link to="/history" style={{ color: getNavbarStyle().color }} onClick={closeMenu} className={activeMenu === "history" ? "active" : ""}>History</Link></li>
             </ul>
             <div className={`auth-links ${isMenuOpen ? 'open' : ''}`}>
-                <Link to="/login" className="login" style={getButtonStyle()} onClick={() => { closeMenu(); }}>Login</Link>
+                <Link to="/login" className="login" style={getButtonStyle()} onClick={closeMenu}>Login</Link>
                 <Link to="/register" className="register" onClick={closeMenu}>Register</Link>
             </div>
         </nav>
