@@ -3,35 +3,36 @@ import { useNavigate } from 'react-router-dom';
 import google from './images/google.png';
 import './Login.css';
 
-const Login = ({ setLoginButtonClicked }) => {
+const Login = ({ setLoginButtonClicked, setIsLoggedIn }) => {
     const navigate = useNavigate(); 
-    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-
+    
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault(); 
+        
         try {
-            const response = await fetch('http://65.0.12.194:3001/api/auth/login', {
+            const formData = new FormData();
+            formData.append('email', email);
+            formData.append('password', password);
+            
+            const response = await fetch('https://appstarktec.com/login.php', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name , email, password }),
+                body: formData,
             });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                localStorage.setItem('token', data.token);
-                setLoginButtonClicked(true);
-                navigate('/'); 
-            } else {
-                setError(data.msg || 'Login failed');
+            
+            if (!response.ok) {
+                const errorMessage = await response.json();
+                throw new Error(errorMessage.error);
             }
-        } catch (err) {
-            setError('Server error');
+            
+            const data = await response.json();
+            localStorage.setItem('token', data.token);
+            setIsLoggedIn(true); 
+            navigate('/'); 
+        } catch (error) {
+            setError(error.message);
         }
     };
 
@@ -39,16 +40,8 @@ const Login = ({ setLoginButtonClicked }) => {
         <div className="registration-page">
             <div className="registration-form">
                 <h2>Welcome Back</h2>
-                <p>Sign in Enter your details to With login to your accounts</p>
+                <p>Sign in Enter your details to login to your account</p>
                 <form onSubmit={handleSubmit}>
-                    <div className="input-container">
-                        <label htmlFor="name">Name</label>
-                        <input type="text" 
-                        id="name" 
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder="Your name" />
-                    </div>
                     <div className="input-container">
                         <label htmlFor="email">Email</label>
                         <input
@@ -82,7 +75,7 @@ const Login = ({ setLoginButtonClicked }) => {
                     </div>
                     {error && <p className="error">{error}</p>}
                     <button 
-                    type="submit" 
+                        type="submit" 
                         style={{ backgroundColor: '#FF7A00' }}
                     >
                         Login

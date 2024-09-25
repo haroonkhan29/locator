@@ -1,68 +1,78 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import google from './images/google.png'; 
+import { useNavigate } from 'react-router-dom'; 
 import './Registration.css';
 
 const Registration = () => {
-    const [users, setUsers] = useState([]);
+    const navigate = useNavigate(); 
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const [password, setPassword] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
-    
+    const [error, setError] = useState('');
+
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        const userData = {
-            name: e.target.name.value,
-            email: e.target.email.value,
-            phone: e.target.phone.value,
-            password: e.target.password.value,
-        };
+        e.preventDefault(); 
+        
         try {
-            const response = await fetch('http://65.0.12.194:3001/api/auth/register', {
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('email', email);
+            formData.append('phone', phone);
+            formData.append('password', password);
+            
+            const response = await fetch('https://appstarktec.com/register.php', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(userData),
+                body: formData,
             });
-            const data = await response.json();
-            console.log(data); 
-            setSuccessMessage('Account created successfully!'); 
-            e.target.reset();
-            setTimeout(() => {
-                setSuccessMessage('');
-            }, 3000); 
-        } catch (err) {
-            console.error(err);
-            setSuccessMessage('Failed to create account');
+            
+            if (!response.ok) {
+                const errorMessage = await response.json();
+                throw new Error(errorMessage.error);
+            }
+            
+            setSuccessMessage('Registration successful! Please log in.');
+            setName('');
+            setEmail('');
+            setPhone('');
+            setPassword('');
+            setError('');
+            navigate('/login');
+        } catch (error) {
+            setError(error.message);
         }
     };
-
-    const fetchUsers = async () => {
-        try {
-            const response = await fetch('http://65.0.12.194:3001/api/auth/users');
-            const data = await response.json();
-            setUsers(data);
-        } catch (err) {
-            console.error(err);
-        }
-    };
-
-    useEffect(() => {
-        fetchUsers();
-    }, []);
 
     return (
         <div className="registration-page">
             <div className="registration-form">
                 <h2>Let's Create Your Account</h2>
                 {successMessage && <p className="success-message">{successMessage}</p>}
+                {error && <p className="error">{error}</p>}
                 <p>Sign Up With Us And Get 50% OFF On Your First Order</p>
                 <form onSubmit={handleSubmit}>
                     <div className="input-container">
                         <label htmlFor="name">Name</label>
-                        <input type="text" id="name" name="name" placeholder="Your name" required />
+                        <input
+                            type="text"
+                            id="name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            placeholder="Your name"
+                            required 
+                        />
                     </div>
                     <div className="input-container">
                         <label htmlFor="email">Email</label>
-                        <input type="email" id="email" name="email" placeholder="name@gmail.com" required />
+                        <input
+                            type="email"
+                            id="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="name@gmail.com"
+                            required 
+                        />
                     </div>
                     <div className="input-container">
                         <label htmlFor="phone">Phone Number</label>
@@ -72,12 +82,25 @@ const Registration = () => {
                                 <option value="UAE">UAE</option>
                                 <option value="PAK">PAK</option>
                             </select>
-                            <input type="tel" id="phone" name="phone" placeholder="+166 (555) 000-0000" required />
+                            <input type="tel"
+                                id="phone"
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
+                                placeholder="+166 (555) 000-0000"
+                                required 
+                            />
                         </div>
                     </div>
                     <div className="input-container">
                         <label htmlFor="password">Password</label>
-                        <input type="password" id="password" name="password" placeholder="Your password" required />
+                        <input
+                            type="password"
+                            id="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Your password"
+                            required 
+                        />
                     </div>
                     <button type="submit">Create An Account</button>
                 </form>

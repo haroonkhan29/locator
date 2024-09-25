@@ -34,7 +34,7 @@ function App() {
                     <Route path="/isd-codes" element={isLoggedIn ? <IsdCodes /> : <Navigate to="/login" />} />
                     <Route path="/history" element={isLoggedIn ? <History /> : <Navigate to="/login" />} />
                     <Route path="/register" element={<Registration />} />
-                    <Route path="/login" element={<Login setLoginButtonClicked={setLoginButtonClicked} />} />
+                    <Route path="/login" element={<Login setLoginButtonClicked={setLoginButtonClicked} setIsLoggedIn={setIsLoggedIn} />} />
                 </Routes>
                 <Footer />
             </div>
