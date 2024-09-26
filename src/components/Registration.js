@@ -5,6 +5,7 @@ import './Registration.css';
 
 const Registration = () => {
     const navigate = useNavigate(); 
+    const [isLoggedIn, setIsLoggedIn] = useState(false); 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
@@ -44,6 +45,35 @@ const Registration = () => {
         }
     };
 
+    const handleGoogleSignIn = async () => {
+        const clientId = '467555992865-ae8temvh1sj2o38ks55e9khff2gol009.apps.googleusercontent.com';
+        const redirectUri = 'http://localhost/google/google-oauth.php';
+
+        const url = `https://accounts.google.com/o/oauth2/auth?` +
+            `response_type=code&` +
+            `client_id=${clientId}&` +
+            `redirect_uri=${redirectUri}&` +
+            `scope=https://www.googleapis.com/auth/userinfo.email&` +
+            `access_type=offline&` +
+            `prompt=consent`;
+
+        window.open(url, '_self'); 
+
+        try {
+            const response = await fetch('http://localhost/google/google-oauth.php'); 
+            const data = await response.json();
+            if (data.success) {
+                localStorage.setItem('token', data.token); 
+                setIsLoggedIn(true);
+                navigate('/'); 
+            } else {
+                console.error(data.message); 
+            }
+        } catch (error) {
+            console.error("Error fetching session state:", error);
+        }
+    };
+
     return (
         <div className="registration-page">
             <div className="registration-form">
@@ -75,23 +105,6 @@ const Registration = () => {
                         />
                     </div>
                     <div className="input-container">
-                        <label htmlFor="phone">Phone Number</label>
-                        <div className="phone-input">
-                            <select name="country">
-                                <option value="USA">USA</option>
-                                <option value="UAE">UAE</option>
-                                <option value="PAK">PAK</option>
-                            </select>
-                            <input type="tel"
-                                id="phone"
-                                value={phone}
-                                onChange={(e) => setPhone(e.target.value)}
-                                placeholder="+166 (555) 000-0000"
-                                required 
-                            />
-                        </div>
-                    </div>
-                    <div className="input-container">
                         <label htmlFor="password">Password</label>
                         <input
                             type="password"
@@ -109,7 +122,7 @@ const Registration = () => {
                     <p className="or-text">OR</p>
                     <div className="or-line"></div>
                 </div>
-                <button className="google-signup">
+                <button className="google-signup" onClick={handleGoogleSignIn}>
                     <img src={google} alt="Google Icon"/>
                     Sign up With Google
                 </button>

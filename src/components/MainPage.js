@@ -211,6 +211,7 @@ const MainPage = () => {
     const [isLoading, setIsLoading] = useState(false); 
     const dropdownRef = useRef(null);
 
+    
     useEffect(() => {
         const normalizedQuery = searchQuery.toLowerCase();
         const matchingCountries = countryOptions.filter(option =>
