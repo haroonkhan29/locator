@@ -28,9 +28,9 @@ function App() {
             <div className="App">
                 <Navbar isLoginButtonClicked={isLoginButtonClicked} />
                 <Routes>
-                <Route path="/" element={<MainPage />} />
-                <Route path="/lookup" element={isLoggedIn ? <Lookup /> : <Navigate to="/login" />} />
-                    <Route path="/ip-tracker" element={isLoggedIn ? <Tracker /> : <Navigate to="/login" />} />
+                <Route path="/" element={isLoggedIn ? <MainPage /> : <Navigate to="/login" />} />
+                <Route path="/lookup" element={<Lookup/>} />
+                    <Route path="/ip-tracker" element={isLoggedIn ? <Tracker/> : <Navigate to="/login"/>} />
                     <Route path="/isd-codes" element={isLoggedIn ? <IsdCodes /> : <Navigate to="/login" />} />
                     <Route path="/history" element={isLoggedIn ? <History /> : <Navigate to="/login" />} />
                     <Route path="/register" element={<Registration />} />

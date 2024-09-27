@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import google from './images/google.png'; 
-import { useNavigate } from 'react-router-dom'; 
+import google from './images/google.png';
+import { useNavigate } from 'react-router-dom';
 import './Registration.css';
 
 const Registration = () => {
-    const navigate = useNavigate(); 
-    const [isLoggedIn, setIsLoggedIn] = useState(false); 
+    const navigate = useNavigate();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
@@ -14,25 +14,25 @@ const Registration = () => {
     const [error, setError] = useState('');
 
     const handleSubmit = async (e) => {
-        e.preventDefault(); 
-        
+        e.preventDefault();
+
         try {
             const formData = new FormData();
             formData.append('name', name);
             formData.append('email', email);
             formData.append('phone', phone);
             formData.append('password', password);
-            
+
             const response = await fetch('https://appstarktec.com/register.php', {
                 method: 'POST',
                 body: formData,
             });
-            
+
             if (!response.ok) {
                 const errorMessage = await response.json();
                 throw new Error(errorMessage.error);
             }
-            
+
             setSuccessMessage('Registration successful! Please log in.');
             setName('');
             setEmail('');
@@ -47,7 +47,7 @@ const Registration = () => {
 
     const handleGoogleSignIn = async () => {
         const clientId = '467555992865-ae8temvh1sj2o38ks55e9khff2gol009.apps.googleusercontent.com';
-        const redirectUri = 'http://localhost/google/google-oauth.php';
+        const redirectUri = 'https://appstarktec.com/google-oauth.php';
 
         const url = `https://accounts.google.com/o/oauth2/auth?` +
             `response_type=code&` +
@@ -57,17 +57,17 @@ const Registration = () => {
             `access_type=offline&` +
             `prompt=consent`;
 
-        window.open(url, '_self'); 
+        window.open(url, '_self');
 
         try {
-            const response = await fetch('http://localhost/google/google-oauth.php'); 
+            const response = await fetch('https://appstarktec.com/google-oauth.php');
             const data = await response.json();
             if (data.success) {
-                localStorage.setItem('token', data.token); 
+                localStorage.setItem('token', data.token);
                 setIsLoggedIn(true);
-                navigate('/'); 
+                navigate('/lookup');
             } else {
-                console.error(data.message); 
+                console.error(data.message);
             }
         } catch (error) {
             console.error("Error fetching session state:", error);
@@ -90,7 +90,7 @@ const Registration = () => {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             placeholder="Your name"
-                            required 
+                            required
                         />
                     </div>
                     <div className="input-container">
@@ -101,7 +101,7 @@ const Registration = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="name@gmail.com"
-                            required 
+                            required
                         />
                     </div>
                     <div className="input-container">
@@ -112,7 +112,7 @@ const Registration = () => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Your password"
-                            required 
+                            required
                         />
                     </div>
                     <button type="submit">Create An Account</button>
@@ -123,7 +123,7 @@ const Registration = () => {
                     <div className="or-line"></div>
                 </div>
                 <button className="google-signup" onClick={handleGoogleSignIn}>
-                    <img src={google} alt="Google Icon"/>
+                    <img src={google} alt="Google Icon" />
                     Sign up With Google
                 </button>
             </div>
