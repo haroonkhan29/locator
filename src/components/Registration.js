@@ -11,6 +11,7 @@ const Registration = () => {
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+
     const [error, setError] = useState('');
 
     const handleSubmit = async (e) => {
