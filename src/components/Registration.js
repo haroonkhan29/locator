@@ -46,7 +46,7 @@ const Registration = () => {
     };
 
     const handleGoogleSignIn = async () => {
-        const clientId = '467555992865-ae8temvh1sj2o38ks55e9khff2gol009.apps.googleusercontent.com';
+        const clientId = '139432883336-0qeplf9qee45dhvont84u77okog57ktf.apps.googleusercontent.com';
         const redirectUri = 'https://appstarktec.com/google-oauth.php';
 
         const url = `https://accounts.google.com/o/oauth2/auth?` +

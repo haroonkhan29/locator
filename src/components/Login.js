@@ -70,7 +70,7 @@ const Login = ({ setLoginButtonClicked, setIsLoggedIn }) => {
                             <label htmlFor="rememberMe">Remember Me</label>
                         </div>
                         <div className="forgot-password">
-                            <a href="#forgot-password">Forgot Password?</a>
+                            {/* <a href="#forgot-password">Forgot Password?</a> */}
                         </div>
                     </div>
                     {error && <p className="error">{error}</p>}
